@@ -15,17 +15,18 @@ axios.defaults.withCredentials = true
 axios.defaults.baseURL = 'http://127.0.0.1:8000/api/'
 axios.defaults.headers.common['Accept'] = 'application/json'
 
-// axios.interceptors.response.use(function (error) {
-//   if (error) {
-//     const originalRequest = error.config;
-
-//     if (error.response.status === 401 && !originalRequest._retry) {
-//       originalRequest._retry = true;
-//       store.dispatch('logout');
-//       return router.push('/login')
-//     }
-//   }
-// })
+const UNAUTHORIZED = 401;
+axios.interceptors.response.use(
+  response => response,
+  error => {
+    const {status} = error.response;
+    if (status === UNAUTHORIZED) {
+      store.dispatch('logout');
+      return router.push('/login')
+    }
+    return Promise.reject(error);
+ }
+);
 
 axios.interceptors.request.use(
   async config => {
