@@ -1,31 +1,18 @@
-import axios from 'axios'
-
 const state = {
     user: null,
-    token: null,
-    colors: null
+    token: null
 };
 
 const getters = {
     isAuthenticated: state => !!state.user,
-    stateColors: state => state.colors,
-    stateUser: state => state.user
+    stateUser: state => state.user,
+    stateToken: state => state.token
 };
 
 const actions = {
     async login({commit}, data) {
         await commit('setUser', data.user)
         await commit('setToken', data.token)
-    },
-
-    async createColor({dispatch}, color) {
-        await axios.post('colors', color)
-        await dispatch('getColors')
-    },
-
-    async getColors( {commit} ) {
-        let response = await axios.get('colors')
-        commit('setColors', response.data)
     },
 
     async logout( {commit} ) {
@@ -43,10 +30,6 @@ const mutations = {
         console.log('setting token')
         console.log(token)
         state.token = token
-    },
-    
-    setColors(state, colors) {
-        state.colors = colors
     },
 
     logout(state) {

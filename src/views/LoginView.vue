@@ -39,7 +39,7 @@
             }
         },
         methods: {
-            ...mapActions(['login']),
+            ...mapActions(['login', 'getColors']),
             async submit() {
                 const user = new FormData();
 
@@ -50,13 +50,12 @@
                 axios.post('/login', user).then((response) => {
                     if (response.data.success) {
                         this.login(response.data)
+                        this.getColors()
                         this.$router.push('/')
                     } else {
                         this.error = response.data.message
                     }
-                }).catch((err) => {
-                    console.log('error');
-                    console.log(err)
+                }).catch(() => {
                     this.error = 'Invalid credentials.'
                 })
             }
