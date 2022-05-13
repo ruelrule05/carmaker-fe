@@ -3,8 +3,12 @@
     <nav>
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
+      <div v-if="isLoggedIn">
+        <a @click="logout">Logout</a>
+      </div>
+      <router-link to="/login" v-else>Login</router-link>
     </nav>
-    <router-view/>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -30,3 +34,19 @@ nav a.router-link-exact-active {
   color: #42b983;
 }
 </style>
+
+<script>
+  export default {
+    computed: {
+      isLoggedIn: function() {
+        return this.$store.getters.isAuthenticated
+      }
+    },
+    methods: {
+      async logout() {
+        await this.$store.dispatch('logout')
+        this.$router.push('/login')
+      }
+    }
+  }
+</script>
