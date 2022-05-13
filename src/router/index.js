@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 import CarsView from '../views/CarsView.vue'
 import LoginView from '../views/LoginView.vue'
 import ColorsView from '../views/Colors.vue'
+import TypesView from '../views/Types.vue'
 
 Vue.use(VueRouter)
 
@@ -20,6 +21,14 @@ const routes = [
     path: '/colors',
     name: 'colors',
     component: ColorsView,
+    meta: {
+      auth: true
+    }
+  },
+  {
+    path: '/types',
+    name: 'types',
+    component: TypesView,
     meta: {
       auth: true
     }

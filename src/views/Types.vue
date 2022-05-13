@@ -1,14 +1,14 @@
 <template>
-  <div id="colorsWrapper" class="container mx-auto mt-5">
-    <h1 class="font-bold text-lg">Color Manager</h1>
+  <div id="typesWrapper" class="container mx-auto mt-5">
+    <h1 class="font-bold text-lg">Car Type Manager</h1>
 
     <div class="grid grid-cols-12 gap-2">
       <div class="col-span-2 border-r-4 border-gray-200 mt-3 p-2">
-        <div>Add Color</div>
-        <form action="#" @submit.prevent="addColor">
+        <div>Add Type</div>
+        <form action="#" @submit.prevent="addType">
           <div class="block">
             <label class="text-sm" for="name">Name:</label>
-            <input type="text" class="border border-gray-300 px-2 py-1" v-model="color" placeholder="Enter color...">
+            <input type="text" class="border border-gray-300 px-2 py-1" v-model="color" placeholder="Enter type...">
             <p v-if="error.length > 0" id="error" class="text-red-500 text-sm">{{ error }}</p>
           </div>
           <div class="block mt-2">
@@ -18,9 +18,9 @@
       </div>
       <div class="col-span-10">
         <div id="color-list" class="grid grid-cols-10 gap-2 mt-3">
-          <div v-for="color in this.$store.getters.getColors" :key="color.id" class="capitalize col-span-1 border border-gray-200 flex justify-center py-10 cursor-pointer hover:bg-green-200 relative">
-            <span class="text-right absolute top-0 right-0 mr-2" @click="deleteColor(color.id)">x</span>
-            {{ color.name }}
+          <div v-for="carType in this.$store.getters.getCarTypes" :key="carType.id" class="capitalize col-span-1 border border-gray-200 flex justify-center py-10 cursor-pointer hover:bg-green-200 relative">
+            <span class="text-right absolute top-0 right-0 mr-2" @click="deleteColor(carType.id)">x</span>
+            {{ carType.name }}
           </div>
         </div>
       </div>
@@ -34,7 +34,7 @@ import { mapActions } from 'vuex'
 import * as _ from 'lodash'
 
 export default {
-  name: 'ColorsView',
+  name: 'TypesView',
   components: {
   },
   data() {
@@ -44,20 +44,20 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['addColor']),
-    addColor: function () {
+    ...mapActions(['addCarType']),
+    addType: function () {
       let that = this
-      const colorForm = new FormData()
+      const typeForm = new FormData()
 
-      colorForm.append('name', this.color)
+      typeForm.append('name', this.color)
 
-      axios.post('/colors', colorForm).then((response) => {
+      axios.post('/car-types', typeForm).then((response) => {
         if (response.data.success) {
-          this.$swal(this.color, 'A new color has been added.', 'success')
+          this.$swal(this.color, 'A new car type has been added.', 'success')
 
           this.color = ''
           this.error = ''
-          this.$store.dispatch('getColors');
+          this.$store.dispatch('getCarTypes');
         }
       }).catch((err) => {
           if(err.response.status == 422) {
@@ -75,7 +75,7 @@ export default {
 
       this.$swal({
         title: "Confirm Delete",
-        text: "Are you sure you want to deleted the selected color?",
+        text: "Are you sure you want to deleted the selected car type?",
         icon: "warning",
         buttons: {
           cancel: {
@@ -90,12 +90,12 @@ export default {
         }
       }).then(function(proceed) {
         if (proceed) {
-          axios.delete('/colors/' + id).then(response => {
+          axios.delete('/car-types/' + id).then(response => {
             if (response.data.success) {
-              that.$swal('Delete Color', 'The selected color has been deleted.', 'success')
-              that.$store.dispatch('getColors')
+              that.$swal('Delete Color', 'The selected car type has been deleted.', 'success')
+              that.$store.dispatch('getCarTypes')
             } else {
-              that.$swal('Delete Color', 'Failed to delete selected color.', 'error')
+              that.$swal('Delete Color', 'Failed to delete selected car type.', 'error')
             }
           })
         }

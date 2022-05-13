@@ -27,14 +27,13 @@ const mutations = {
     },
     
     setToken(state, token) {
-        console.log('setting token')
-        console.log(token)
         state.token = token
     },
 
     logout(state) {
         state.user = null
         state.token = null
+        state.carTypes = null
         state.colors = null
     }
 };
