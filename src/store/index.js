@@ -8,16 +8,21 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    cars: null,
     colors: null,
     carTypes: null,
     manufacturers: null
   },
   getters: {
+    getCars: state => state.cars,
     getCarTypes: state => state.carTypes,
     getColors: state => state.colors,
     getManufacturers: state => state.manufacturers
   },
   mutations: {
+    setCars(state, cars) {
+      state.cars = cars
+    },
     setCarTypes(state, types) {
       state.carTypes = types
     },
@@ -29,6 +34,9 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    async addCar({dispatch}) {
+      await dispatch('getCars')
+    },
     async addCarType({dispatch}) {
       await dispatch('getCarTypes')
     },
@@ -38,6 +46,11 @@ export default new Vuex.Store({
 
     async addManufacturer({dispatch}) {
       await dispatch('getManufacturers')
+    },
+
+    async getCars( {commit} ) {
+      let response = await axios.get('/cars')
+      commit('setCars', response.data.data)
     },
 
     async getCarTypes( {commit} ) {

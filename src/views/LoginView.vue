@@ -39,7 +39,7 @@
             }
         },
         methods: {
-            ...mapActions(['login', 'getColors', 'getCarTypes', 'getManufacturers']),
+            ...mapActions(['login', 'getColors', 'getCarTypes', 'getManufacturers', 'getCars']),
             async submit() {
                 const user = new FormData();
 
@@ -53,6 +53,7 @@
                         this.getColors()
                         this.getCarTypes()
                         this.getManufacturers()
+                        this.getCars()
                         this.$router.push('/')
                     } else {
                         this.error = response.data.message
